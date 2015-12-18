@@ -133,6 +133,8 @@ Vagrant.configure("2") do |config|
         config.vm.synced_folder ENV['HOME'], ENV['HOME'], id: "home", :nfs => true, :mount_options => ['nolock,vers=3,udp']
       end
 
+      ### For TimeZone to Asia/Seoul
+      config.vm.provision :shell, :inline => "sudo timedatectl set-timezone Asia/Seoul"
       ### For fleet files
       fleet_dir = "/tmp/fleet"
       config.vm.provision :shell, :inline => "mkdir -m 777 -p #{fleet_dir}"
