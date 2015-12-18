@@ -124,7 +124,7 @@ Vagrant.configure("2") do |config|
       config.vm.network :private_network, ip: ip
 
       # Uncomment below to enable NFS for sharing the host machine into the coreos-vagrant VM.
-      #config.vm.synced_folder ".", "/home/core/share", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
+      #config.vm.synced_folder "./shared", "/home/core/shared", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
       $shared_folders.each_with_index do |(host_folder, guest_folder), index|
         config.vm.synced_folder host_folder.to_s, guest_folder.to_s, id: "core-share%02d" % index, nfs: true, mount_options: ['nolock,vers=3,udp']
       end
@@ -133,8 +133,19 @@ Vagrant.configure("2") do |config|
         config.vm.synced_folder ENV['HOME'], ENV['HOME'], id: "home", :nfs => true, :mount_options => ['nolock,vers=3,udp']
       end
 
+      ### For fleet files
+      fleet_dir = "/tmp/fleet"
+      config.vm.provision :shell, :inline => "mkdir -m 777 -p #{fleet_dir}"
+      Dir.foreach(File.join(File.dirname(__FILE__), "./fleet")) do |fleet_file|
+          next if fleet_file == '.' or fleet_file == '..'
+          fleet_source = File.join(File.dirname(__FILE__), "./fleet/#{fleet_file}")
+          config.vm.provision :file, :source => "#{fleet_source}", :destination => "#{fleet_dir}/#{fleet_file}"
+      end
+
       if File.exist?(CLOUD_CONFIG_PATH)
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_PATH}", :destination => "/tmp/vagrantfile-user-data"
+        ### For zookeeper node id
+        config.vm.provision :shell, :inline => "sed -i 's/$zookeeperid/#{i}/' /tmp/vagrantfile-user-data"
         config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
       end
 
