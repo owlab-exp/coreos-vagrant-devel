@@ -1,5 +1,5 @@
 [Unit]
-Description=zookeeper
+Description=Zookeeper
 After=docker.service,flanneld.service
 Requires=docker.service,flanneld.service
 
