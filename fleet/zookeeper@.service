@@ -1,7 +1,7 @@
 [Unit]
 Description=Zookeeper
-After=docker.service,flanneld.service
-Requires=docker.service,flanneld.service
+After=docker.service flanneld.service
+Requires=docker.service flanneld.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker kill %p-%i
