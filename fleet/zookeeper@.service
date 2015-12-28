@@ -14,4 +14,4 @@ TimeoutStartSec=900s
 
 [X-Fleet]
 Conflicts=%p@*.service
-MachineMetadata=zookeeperid=%i
+MachineMetadata=machineid=%i

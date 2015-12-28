@@ -1,7 +1,7 @@
 [Unit]
 Description=Kafka Server
-After=docker.service flanneld.service
-Requires=docker.service flanneld.service
+After=docker.service flanneld.service zookeeper@%i.service
+Requires=docker.service flanneld.service zookeeper@%i.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker kill %p-%i
@@ -14,3 +14,4 @@ TimeoutStartSec=900s
 
 [X-Fleet]
 Conflicts=%p@*.service
+MachineMetadata=machineid=%i

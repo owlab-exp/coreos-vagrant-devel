@@ -146,8 +146,8 @@ Vagrant.configure("2") do |config|
 
       if File.exist?(CLOUD_CONFIG_PATH)
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_PATH}", :destination => "/tmp/vagrantfile-user-data"
-        ### For zookeeper node id
-        config.vm.provision :shell, :inline => "sed -i 's/$zookeeperid/#{i}/' /tmp/vagrantfile-user-data"
+        ### For machine id
+        config.vm.provision :shell, :inline => "sed -i 's/$machineid/#{i}/' /tmp/vagrantfile-user-data"
         config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
       end
 
