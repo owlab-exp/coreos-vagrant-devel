@@ -2,9 +2,9 @@
 
 ---
 write_files:
-- path: /etc/hosts
-  content: |
-    192.168.10.81 obzen-reg
+#- path: /etc/hosts
+#  content: |
+#    192.168.10.81 obzen-reg
 - path: /etc/systemd/system/docker.service.d/50-insecure-registry.conf
   content: |
     [Service]
@@ -26,6 +26,16 @@ coreos:
   flannel:
     interface: $public_ipv4
   units:
+  - name: settimezone.service
+    command: start
+    content: |
+        [Unit]
+        Description=Set the time zone
+
+        [Service]
+        ExecStart=/usr/bin/timedatectl set-timezone Asia/Seoul
+        RemainAfterExit=yes
+        Type=oneshot
   - name: etcd2.service
     command: start
   - name: fleet.service

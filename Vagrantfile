@@ -136,14 +136,14 @@ Vagrant.configure("2") do |config|
 
       ### For TimeZone to Asia/Seoul
       config.vm.provision :shell, :inline => "sudo timedatectl set-timezone Asia/Seoul"
-      ### For fleet files
-      fleet_dir = "/tmp/fleet"
-      config.vm.provision :shell, :inline => "mkdir -m 777 -p #{fleet_dir}"
-      Dir.foreach(File.join(File.dirname(__FILE__), "./fleet")) do |fleet_file|
-          next if fleet_file == '.' or fleet_file == '..'
-          fleet_source = File.join(File.dirname(__FILE__), "./fleet/#{fleet_file}")
-          config.vm.provision :file, :source => "#{fleet_source}", :destination => "#{fleet_dir}/#{fleet_file}"
-      end
+      #### For fleet files
+      #fleet_dir = "/tmp/fleet"
+      #config.vm.provision :shell, :inline => "mkdir -m 777 -p #{fleet_dir}"
+      #Dir.foreach(File.join(File.dirname(__FILE__), "./fleet")) do |fleet_file|
+      #    next if fleet_file == '.' or fleet_file == '..'
+      #    fleet_source = File.join(File.dirname(__FILE__), "./fleet/#{fleet_file}")
+      #    config.vm.provision :file, :source => "#{fleet_source}", :destination => "#{fleet_dir}/#{fleet_file}"
+      #end
 
       if File.exist?(CLOUD_CONFIG_PATH)
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_PATH}", :destination => "/tmp/vagrantfile-user-data"
